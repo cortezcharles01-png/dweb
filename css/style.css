@@ -1,0 +1,151 @@
+:root{
+  --bg:#0b1020;
+  --panel:#111a33;
+  --border:rgba(255,255,255,.10);
+  --text:#e9ecf5;
+  --muted:rgba(233,236,245,.72);
+  --accent:#6ee7ff;
+  --good:#4ade80;
+  --bad:#fb7185;
+  --warn:#fbbf24;
+}
+
+*{ box-sizing:border-box; }
+body{
+  margin:0;
+  font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  background: radial-gradient(1200px 600px at 20% 10%, rgba(110,231,255,.12), transparent 55%),
+              radial-gradient(1200px 600px at 80% 20%, rgba(74,222,128,.10), transparent 55%),
+              var(--bg);
+  color:var(--text);
+}
+
+.wrap{ width:min(1100px, 92vw); margin:0 auto; }
+.main{ padding:18px 0 28px; }
+
+.topbar{
+  position:sticky; top:0;
+  background: rgba(11,16,32,.75);
+  backdrop-filter: blur(10px);
+  border-bottom:1px solid var(--border);
+  z-index:10;
+}
+.topbar-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  gap:14px;
+  padding:14px 0;
+}
+.brand{ display:flex; gap:12px; align-items:center; }
+.logo{
+  width:42px; height:42px; display:grid; place-items:center;
+  border-radius:12px;
+  background: linear-gradient(135deg, rgba(110,231,255,.20), rgba(74,222,128,.18));
+  border:1px solid var(--border);
+  font-weight:900;
+}
+.title{ font-size:18px; font-weight:900; }
+.subtitle{ font-size:12px; color:var(--muted); margin-top:2px; }
+
+.nav{ display:flex; flex-wrap:wrap; gap:10px; justify-content:flex-end; }
+.nav a{
+  color:var(--text);
+  text-decoration:none;
+  font-size:12px;
+  padding:8px 10px;
+  border:1px solid var(--border);
+  border-radius:999px;
+  background: rgba(255,255,255,.04);
+}
+.nav a:hover{ background: rgba(255,255,255,.08); }
+.nav a.danger{ border-color: rgba(251,113,133,.35); }
+
+.grid{ display:grid; gap:14px; }
+.cards{ grid-template-columns: repeat(4, minmax(0,1fr)); margin:12px 0 18px; }
+.two{ grid-template-columns: 1fr 1fr; }
+
+@media (max-width: 900px){
+  .topbar-inner{ flex-direction:column; align-items:flex-start; }
+  .nav{ justify-content:flex-start; }
+  .cards{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .two{ grid-template-columns: 1fr; }
+}
+
+.card, .panel{
+  background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:14px;
+}
+.card-label{ font-size:12px; color:var(--muted); }
+.card-value{ font-size:26px; font-weight:900; margin-top:6px; }
+.neg{ color: var(--bad); }
+.muted{ color: var(--muted); }
+
+h1{ font-size:20px; margin:0 0 12px; }
+h2{ font-size:16px; margin:2px 0 12px; }
+
+.form{ display:grid; gap:10px; }
+.row{ display:grid; gap:6px; }
+label{ font-size:12px; color:var(--muted); }
+input, select{
+  width:100%;
+  padding:10px 12px;
+  border-radius: 12px;
+  border:1px solid var(--border);
+  background: rgba(15,23,48,.65);
+  color: var(--text);
+  outline:none;
+}
+.btn{
+  padding:10px 12px;
+  border-radius: 12px;
+  border:1px solid rgba(110,231,255,.35);
+  background: rgba(110,231,255,.12);
+  color: var(--text);
+  font-weight: 900;
+  cursor:pointer;
+}
+.btn:hover{ background: rgba(110,231,255,.18); }
+
+.table{
+  display:grid;
+  border:1px solid var(--border);
+  border-radius:14px;
+  overflow:hidden;
+}
+.thead, .trow{
+  display:grid;
+  grid-template-columns: 110px 90px 1fr 140px 80px;
+  gap:10px;
+  padding:10px 12px;
+  align-items:center;
+}
+.thead{ background: rgba(255,255,255,.06); font-size:12px; color:var(--muted); font-weight:900; }
+.trow{ border-top:1px solid var(--border); background: rgba(255,255,255,.03); }
+.right{ text-align:right; }
+.pill{
+  font-size:11px; padding:4px 8px; border-radius:999px;
+  border:1px solid var(--border); background: rgba(255,255,255,.04);
+}
+.pill.income{ border-color: rgba(74,222,128,.35); }
+.pill.expense{ border-color: rgba(251,113,133,.35); }
+.pill.saving{ border-color: rgba(110,231,255,.35); }
+.pill.bill{ border-color: rgba(251,191,36,.35); }
+.pill.danger{ border-color: rgba(251,113,133,.55); background: rgba(251,113,133,.12); }
+
+.toast{
+  padding:12px 14px;
+  border-radius:14px;
+  border:1px solid var(--border);
+  background: rgba(255,255,255,.05);
+  margin: 10px 0 16px;
+}
+.toast.ok{ border-color: rgba(74,222,128,.35); }
+.toast.bad{ border-color: rgba(251,113,133,.35); }
+
+.footer{
+  padding: 18px 0 30px;
+  text-align:center;
+  color: var(--muted);
+  font-size:12px;
+}
