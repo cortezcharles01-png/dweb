@@ -28,7 +28,7 @@ $isLoggedIn = isset($_SESSION['user']);
       <div class="logo">₱</div>
       <div>
         <div class="title">Student Savings</div>
-        <div class="subtitle">Wallet • Expenses • Savings • Bills</div>
+        <div class="subtitle">Wallet • Expenses • Savings • Bills • Challenges</div>
       </div>
     </div>
 
@@ -39,6 +39,8 @@ $isLoggedIn = isset($_SESSION['user']);
         <a href="transactions.php">Transactions</a>
         <a href="savings.php">Savings</a>
         <a href="bills.php">Bills</a>
+        <a href="challenges.php">Challenges</a>
+        <a href="report.php">Report</a>
         <a class="danger" href="logout.php">Logout</a>
       <?php else: ?>
         <a href="login.php">Login</a>
