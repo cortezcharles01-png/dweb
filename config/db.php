@@ -49,6 +49,23 @@ CREATE TABLE IF NOT EXISTS bills (
   created_at TEXT NOT NULL,
   FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS challenges (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  title TEXT NOT NULL,
+  description TEXT,
+  target_amount REAL NOT NULL CHECK(target_amount > 0),
+  reward TEXT NOT NULL,
+  penalty TEXT NOT NULL,
+  deadline TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'active' CHECK(status IN ('active','completed','failed')),
+  difficulty INTEGER NOT NULL DEFAULT 1,
+  retry_of INTEGER,
+  created_at TEXT NOT NULL,
+  FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY(retry_of) REFERENCES challenges(id)
+);
 ");
 
 function h(string $s): string { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
