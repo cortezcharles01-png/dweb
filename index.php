@@ -12,7 +12,7 @@ $sumBillsPaid = (float)$pdo->query("SELECT COALESCE(SUM(amount),0) FROM transact
 $walletBalance = $sumIncome - $sumExpense - $sumSaving - $sumBillsPaid;
 
 $unpaidCount = (int)$pdo->query("SELECT COUNT(*) FROM bills WHERE user_id=$userId AND status='unpaid'")->fetchColumn();
-$overdueCount = (int)$pdo->query("SELECT COUNT(*) FROM bills WHERE user_id=$userId AND status='unpaid' AND due_date < date('now')")->fetchColumn();
+$overdueCount = (int)$pdo->query("SELECT COUNT(*) FROM bills WHERE user_id=$userId AND status='unpaid' AND due_date < CURDATE()")->fetchColumn();
 
 $pageTitle = "Dashboard";
 include __DIR__ . '/includes/header.php';
@@ -56,3 +56,4 @@ include __DIR__ . '/includes/header.php';
   </div>
 </section>
 <?php include __DIR__ . '/includes/footer.php'; ?>
+
