@@ -3,13 +3,12 @@ declare(strict_types=1);
 
 // ============================================================
 //  Database Configuration — MySQL
-//  Edit the four constants below to match your environment.
 // ============================================================
 
 define('DB_HOST', 'localhost');
 define('DB_NAME', 'student_savings');
-define('DB_USER', 'root');       // change to your MySQL username
-define('DB_PASS', '');           // change to your MySQL password
+define('DB_USER', 'root');
+define('DB_PASS', '');
 
 try {
   $pdo = new PDO(
@@ -27,6 +26,25 @@ try {
   die("DB Error: " . htmlspecialchars($e->getMessage()));
 }
 
-function h(string $s): string  { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
+function h(string $s): string   { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
 function money(float $v): string { return '₱' . number_format($v, 2); }
-function today(): string        { return date('Y-m-d'); }
+function today(): string         { return date('Y-m-d'); }
+
+/**
+ * GABRIEL — Audit Trail Feature
+ * Logs any user action into the activity_logs table.
+ * Call this after every significant database operation.
+ *
+ * @param PDO    $pdo
+ * @param int    $userId
+ * @param string $actionType  e.g. 'income', 'expense', 'bill', 'login', 'saving', 'challenge'
+ * @param string $description Human-readable description of what happened
+ */
+function logActivity(PDO $pdo, int $userId, string $actionType, string $description): void {
+  $stmt = $pdo->prepare(
+    "INSERT INTO activity_logs (user_id, action_type, description, created_at)
+     VALUES (?, ?, ?, ?)"
+  );
+  $stmt->execute([$userId, $actionType, $description, date('Y-m-d H:i:s')]);
+}
+
