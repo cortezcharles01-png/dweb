@@ -24,6 +24,7 @@ CREATE TABLE IF NOT EXISTS users (
 
 -- ------------------------------------------------------------
 -- Table: transactions
+-- deleted_at added by JENSON — Soft Delete feature
 -- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS transactions (
   id          INT UNSIGNED    NOT NULL AUTO_INCREMENT,
@@ -34,12 +35,14 @@ CREATE TABLE IF NOT EXISTS transactions (
   amount      DECIMAL(12,2)   NOT NULL CHECK (amount > 0),
   tdate       DATE            NOT NULL,
   created_at  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  deleted_at  DATETIME        DEFAULT NULL,   -- JENSON: NULL = active, timestamp = soft deleted
   PRIMARY KEY (id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- ------------------------------------------------------------
 -- Table: bills
+-- deleted_at added by JENSON — Soft Delete feature
 -- ------------------------------------------------------------
 CREATE TABLE IF NOT EXISTS bills (
   id          INT UNSIGNED    NOT NULL AUTO_INCREMENT,
@@ -50,6 +53,7 @@ CREATE TABLE IF NOT EXISTS bills (
   status      ENUM('unpaid','paid') NOT NULL DEFAULT 'unpaid',
   paid_at     DATETIME        DEFAULT NULL,
   created_at  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  deleted_at  DATETIME        DEFAULT NULL,   -- JENSON: NULL = active, timestamp = soft deleted
   PRIMARY KEY (id),
   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -73,4 +77,33 @@ CREATE TABLE IF NOT EXISTS challenges (
   PRIMARY KEY (id),
   FOREIGN KEY (user_id)  REFERENCES users(id)       ON DELETE CASCADE,
   FOREIGN KEY (retry_of) REFERENCES challenges(id)  ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- Table: activity_logs  [GABRIEL — Audit Trail Feature]
+-- Records every significant action a user performs.
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS activity_logs (
+  id          INT UNSIGNED    NOT NULL AUTO_INCREMENT,
+  user_id     INT UNSIGNED    NOT NULL,
+  action_type VARCHAR(50)     NOT NULL,   -- e.g. 'income', 'expense', 'bill', 'login'
+  description TEXT            NOT NULL,
+  created_at  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- ------------------------------------------------------------
+-- Table: notifications  [YURIES — Notification Simulation Feature]
+-- Stores auto-generated alerts for bills, challenges, and balance.
+-- ------------------------------------------------------------
+CREATE TABLE IF NOT EXISTS notifications (
+  id          INT UNSIGNED    NOT NULL AUTO_INCREMENT,
+  user_id     INT UNSIGNED    NOT NULL,
+  type        VARCHAR(50)     NOT NULL,   -- e.g. 'overdue_bill', 'low_balance'
+  message     TEXT            NOT NULL,
+  is_read     TINYINT(1)      NOT NULL DEFAULT 0,
+  created_at  DATETIME        NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (id),
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
