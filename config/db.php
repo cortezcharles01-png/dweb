@@ -5,10 +5,10 @@ declare(strict_types=1);
 //  Database Configuration — MySQL
 // ============================================================
 
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'student_savings');
-define('DB_USER', 'root');
-define('DB_PASS', '');
+define('DB_HOST', $_ENV['DB_HOST'] ?? 'localhost');
+define('DB_NAME', $_ENV['DB_NAME'] ?? 'student_savings');
+define('DB_USER', $_ENV['DB_USER'] ?? 'root');
+define('DB_PASS', $_ENV['DB_PASS'] ?? '');;
 
 try {
   $pdo = new PDO(
