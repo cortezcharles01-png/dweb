@@ -7,8 +7,11 @@ services:
       dockerfile: Dockerfile
     ports:
       - "8080:80"
-    depends_on:
-      - db
+    environment:
+      DB_HOST: db
+      DB_NAME: student_savings
+      DB_USER: root
+      DB_PASS: rootpassword
 
   db:
     build:
