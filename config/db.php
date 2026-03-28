@@ -1,18 +1,17 @@
 <?php
 declare(strict_types=1);
-
 // ============================================================
 //  Database Configuration — MySQL
 // ============================================================
-
 define('DB_HOST', $_ENV['DB_HOST'] ?? 'localhost');
 define('DB_NAME', $_ENV['DB_NAME'] ?? 'student_savings');
 define('DB_USER', $_ENV['DB_USER'] ?? 'root');
-define('DB_PASS', $_ENV['DB_PASS'] ?? '');;
+define('DB_PASS', $_ENV['DB_PASS'] ?? '');
+define('DB_PORT', $_ENV['DB_PORT'] ?? '3306');
 
 try {
   $pdo = new PDO(
-    'mysql:host=' . DB_HOST . ';dbname=' . DB_NAME . ';charset=utf8mb4',
+    'mysql:host=' . DB_HOST . ';port=' . DB_PORT . ';dbname=' . DB_NAME . ';charset=utf8mb4',
     DB_USER,
     DB_PASS,
     [
@@ -26,20 +25,10 @@ try {
   die("DB Error: " . htmlspecialchars($e->getMessage()));
 }
 
-function h(string $s): string   { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
-function money(float $v): string { return '₱' . number_format($v, 2); }
-function today(): string         { return date('Y-m-d'); }
+function h(string $s): string    { return htmlspecialchars($s, ENT_QUOTES, 'UTF-8'); }
+function money(float $v): string  { return '₱' . number_format($v, 2); }
+function today(): string          { return date('Y-m-d'); }
 
-/**
- * GABRIEL — Audit Trail Feature
- * Logs any user action into the activity_logs table.
- * Call this after every significant database operation.
- *
- * @param PDO    $pdo
- * @param int    $userId
- * @param string $actionType  e.g. 'income', 'expense', 'bill', 'login', 'saving', 'challenge'
- * @param string $description Human-readable description of what happened
- */
 function logActivity(PDO $pdo, int $userId, string $actionType, string $description): void {
   $stmt = $pdo->prepare(
     "INSERT INTO activity_logs (user_id, action_type, description, created_at)
@@ -47,4 +36,3 @@ function logActivity(PDO $pdo, int $userId, string $actionType, string $descript
   );
   $stmt->execute([$userId, $actionType, $description, date('Y-m-d H:i:s')]);
 }
-
