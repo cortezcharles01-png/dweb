@@ -34,14 +34,18 @@ $isLoggedIn = isset($_SESSION['user']);
 
     <nav class="nav">
       <?php if ($isLoggedIn): ?>
-        <a href="index.php">Dashboard</a>
-        <a href="wallet.php">Wallet</a>
-        <a href="transactions.php">Transactions</a>
-        <a href="savings.php">Savings</a>
-        <a href="bills.php">Bills</a>
-        <a href="challenges.php">Challenges</a>
-        <a href="report.php">Report</a>
-        <a class="danger" href="logout.php">Logout</a>
+   <a href="index.php">Dashboard</a>
+<a href="wallet.php">Wallet</a>
+<a href="transactions.php">Transactions</a>
+<a href="savings.php">Savings</a>
+<a href="bills.php">Bills</a>
+<a href="challenges.php">Challenges</a>
+<a href="report.php">Report</a>
+<a href="activity_logs.php">Activity Log</a>
+<a href="advanced_filter.php">Filter</a>
+<a href="notifications.php">Notifications</a>
+<a href="trash.php">Trash</a>
+<a class="danger" href="logout.php">Logout</a>
       <?php else: ?>
         <a href="login.php">Login</a>
         <a href="register.php">Register</a>
